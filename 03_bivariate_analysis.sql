@@ -58,14 +58,15 @@ FROM (
 GROUP BY age_group
 ORDER BY mean_score DESC;
 -- Result:
--- Respondents under 25 report the highest average GAD-7 score (mean = 9.59, median = 9),
--- while respondents aged 55+ report the lowest anxiety levels (mean = 4.98, median = 3).
+-- Younger respondents, especially those under 15, report the highest average GAD-7 score
+-- (mean = 10.47, median = 10), while older respondents aged 45+ report lower anxiety levels
+-- (mean = 5.61, median = 5). Respondents with unknown age show the lowest scores overall
+-- (mean = 4.98, median = 3).
 
 -- Interpretation:
 -- This pattern suggests that younger individuals in the dataset tend to experience
--- higher levels of anxiety symptoms, while older age groups report lower anxiety levels.
--- Age may therefore be an important factor influencing anxiety scores.
-
+-- higher levels of anxiety symptoms, while anxiety levels generally decrease with age.
+-- Age therefore appears to be an important factor associated with anxiety scores in this dataset.
 -- ============================================================================
 -- Marriage Status vs Anxiety Score
 SELECT
