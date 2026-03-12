@@ -33,6 +33,7 @@ SET age = TIMESTAMPDIFF(
     DATE('2018-07-05')
 );
 
+-- BUILD AGE GROUPS
 SELECT
     COUNT(*) AS n,
     MIN(age) AS min_age,
@@ -45,28 +46,16 @@ WHERE age IS NOT NULL;
 ALTER TABLE gad7_responses 
 ADD COLUMN age_group VARCHAR(20);
 
--- BUILD AGE GROUPS
 UPDATE gad7_responses
 SET age_group = CASE
-    WHEN age < 25 THEN 'Under 25'
-    WHEN age BETWEEN 25 AND 34 THEN '25-34'
-    WHEN age BETWEEN 35 AND 44 THEN '35-44'
-    ELSE '45+'
-END;
-
-ALTER TABLE gad7_responses DROP COLUMN age_group;
-
-ALTER TABLE gad7_responses 
-ADD COLUMN age_group VARCHAR(20);
-
-UPDATE gad7_responses
-SET age_group = CASE
-    WHEN age < 25 THEN 'Under 25'
-    WHEN age BETWEEN 25 AND 34 THEN '25-34'
-    WHEN age BETWEEN 35 AND 44 THEN '35-44'
-    WHEN age BETWEEN 45 AND 54 THEN '45-54'
-    WHEN age BETWEEN 55 AND 64 THEN '55-64'
-    ELSE '65+'
+    WHEN age = 'Unknown' THEN 'Unknown'
+    WHEN age REGEXP '^[0-9]+$' AND CAST(age AS UNSIGNED) < 15 THEN '<15'
+    WHEN age REGEXP '^[0-9]+$' AND CAST(age AS UNSIGNED) BETWEEN 15 AND 19 THEN '15-19'
+    WHEN age REGEXP '^[0-9]+$' AND CAST(age AS UNSIGNED) BETWEEN 20 AND 24 THEN '20-24'
+    WHEN age REGEXP '^[0-9]+$' AND CAST(age AS UNSIGNED) BETWEEN 25 AND 34 THEN '25-34'
+    WHEN age REGEXP '^[0-9]+$' AND CAST(age AS UNSIGNED) BETWEEN 35 AND 44 THEN '35-44'
+    WHEN age REGEXP '^[0-9]+$' AND CAST(age AS UNSIGNED) >= 45 THEN '45+'
+    ELSE 'Unknown'
 END;
 
 SELECT age_group, COUNT(*) AS n
